@@ -775,7 +775,7 @@ class Flagbit_MEP_Model_Export_Entity_Product extends Mage_ImportExport_Model_Ex
         }
 
         if (isset($attributeValueFilter[$attrCode])) {
-            $attrValue = $this->$attributeValueFilter[$attrCode]($item, $mapItem);
+            $attrValue = $this->{$attributeValueFilter[$attrCode]}($item, $mapItem);
         }
         if (isset($this->_attributeValues[$attrCode])) {
             if (isset($this->_attributeValues[$attrCode][$attrValue])) {
@@ -1118,6 +1118,27 @@ class Flagbit_MEP_Model_Export_Entity_Product extends Mage_ImportExport_Model_Ex
     protected function _getType($item, $mapItem)
     {
         return $item->getTypeId();
+    }
+
+    protected function _getBundlePrice($item, $mapItem)
+    {
+        $priceWithoutBundle = 0;
+        if ($item->getTypeId() == 'bundle') {
+            $typeInstance = $item->getTypeInstance(true);
+            $selectionCollection = $typeInstance->getSelectionsCollection($typeInstance->getOptionsIds($item), $item);
+            $optionCollection = $typeInstance->getOptionsCollection($item);
+            $options = $optionCollection
+                ->appendSelections($selectionCollection, false, Mage::helper('catalog/product')->getSkipSaleableCheck());
+
+            foreach ($options as $option) {
+                $selections = $option->getSelections();
+                if (count($selections) > 0) {
+                    $child = $selections[0];
+                    $priceWithoutBundle += $child->getFinalPrice();
+                }
+            }
+        }
+        return $priceWithoutBundle;
     }
 
     /**
