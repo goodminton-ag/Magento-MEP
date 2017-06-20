@@ -1248,9 +1248,11 @@ class Flagbit_MEP_Model_Export_Entity_Product extends Mage_ImportExport_Model_Ex
 
             try {
                 foreach ($attribute->getSource()->getAllOptions(false) as $option) {
-                    foreach (is_array($option['value']) ? $option['value'] : array($option) as $innerOption) {
-                        if (strlen($innerOption['value'])) { // skip ' -- Please Select -- ' option
-                            $options[$innerOption['value']] = $innerOption[$index];
+                    if (isset($option['value'])) {
+                        foreach (is_array($option['value']) ? $option['value'] : array($option) as $innerOption) {
+                            if (isset($innerOption['value']) && strlen($innerOption['value']) && isset($innerOption[$index])) { // skip ' -- Please Select -- ' option
+                                $options[$innerOption['value']] = $innerOption[$index];
+                            }
                         }
                     }
                 }
