@@ -1135,7 +1135,7 @@ class Flagbit_MEP_Model_Export_Entity_Product extends Mage_ImportExport_Model_Ex
                 $selections = $option->getSelections();
                 if (count($selections) > 0) {
                     $child = $selections[0];
-                    $priceWithoutBundle += $child->getFinalPrice();
+                    $priceWithoutBundle += ($child->getFinalPrice() * $child->getData('selection_qty'));
                 }
             }
         }
