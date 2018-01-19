@@ -206,9 +206,8 @@ class Flagbit_MEP_Model_Export_Adapter_Twig extends Mage_ImportExport_Model_Expo
         $twigDataRow = array_map(array($this, 'cleanElement'), $rowData);
         $result = $this->_twig->render('content', $twigDataRow);
 
-        $result = Mage::helper('mep/encoding')->fixUTF8($result);
-
         if (!empty($this->_encoding) && $this->_encoding != 'UTF-8') {
+            $result = Mage::helper('mep/encoding')->fixUTF8($result);
             $result = iconv ( "UTF-8", $this->_encoding, $result );
         }
 
@@ -247,12 +246,18 @@ class Flagbit_MEP_Model_Export_Adapter_Twig extends Mage_ImportExport_Model_Expo
      */
     public function cleanElement($element)
     {
+        if (empty($this->_encoding)) {
+            return $element;
+        }
+
         if (is_array($element)) {
             foreach ($element as $key => $value) {
                 $element[$key] = $this->cleanElement($value);
             }
+
             return $element;
         }
+
         if(substr($element,0,2) == 'a:') {
             return $element;
         }
@@ -264,6 +269,7 @@ class Flagbit_MEP_Model_Export_Adapter_Twig extends Mage_ImportExport_Model_Expo
         // remove trademark sign (hex value 99)
         $element = preg_replace('/[\x99]/', '', $element);
         $element = utf8_encode($element);
+        
         return $element;
     }
 }
