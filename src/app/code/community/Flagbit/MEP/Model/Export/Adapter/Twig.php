@@ -246,7 +246,7 @@ class Flagbit_MEP_Model_Export_Adapter_Twig extends Mage_ImportExport_Model_Expo
      */
     public function cleanElement($element)
     {
-        if (empty($this->_encoding)) {
+        if ($this->_encoding == 'UTF-8') {
             return $element;
         }
 

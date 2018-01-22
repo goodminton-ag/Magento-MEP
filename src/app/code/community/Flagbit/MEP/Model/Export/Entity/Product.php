@@ -401,14 +401,6 @@ class Flagbit_MEP_Model_Export_Entity_Product extends Mage_ImportExport_Model_Ex
 
             Mage::helper('mep/log')->info('EXPORT done', $this);
         }
-
-        /**
-         * IMPORTANT TO PREVENT MySql to go away
-         */
-        $core_read = Mage::getSingleton('core/resource')->getConnection('core_read');
-        /** @var Varien_Db_Adapter_Pdo_Mysql $core_read */
-        $core_read->closeConnection();
-        $core_read->getConnection();
     }
 
     /**
@@ -462,13 +454,6 @@ class Flagbit_MEP_Model_Export_Entity_Product extends Mage_ImportExport_Model_Ex
             $writer = Mage::helper('mep')->getNewWriteInstance($destinationFile, 'twig');
             $this->_initWriter($writer);
         }
-        /**
-         * IMPORTANT TO PREVENT MySql to go away
-         */
-        $core_read = Mage::getSingleton('core/resource')->getConnection('core_read');
-        /** @var Varien_Db_Adapter_Pdo_Mysql $core_read */
-        $core_read->closeConnection();
-        $core_read->getConnection();
 
         $this->_shippingAttrCodes = $shippingAttrCodes;
         Mage::helper('mep/log')->debug('START Thread: ' . $offsetProducts, $this);
