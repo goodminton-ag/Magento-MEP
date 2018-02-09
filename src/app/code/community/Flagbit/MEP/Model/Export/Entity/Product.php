@@ -401,6 +401,16 @@ class Flagbit_MEP_Model_Export_Entity_Product extends Mage_ImportExport_Model_Ex
 
             Mage::helper('mep/log')->info('EXPORT done', $this);
         }
+
+        $db = Mage::getSingleton('core/resource')->getConnection('core_read');
+        $db->closeConnection();
+        $db->getConnection();
+
+        $config = $db->getConfig();
+
+        if (isset($config['initStatements'])) {
+            $db->query($config['initStatements']);
+        }
     }
 
     /**
