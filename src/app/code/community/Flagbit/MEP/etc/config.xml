@@ -115,6 +115,10 @@
                         <class>mep/twig_observer_unserializeString</class>
                         <method>addUnserializeString</method>
                     </mep_twig_observer_unserializeString>
+                    <mep_twig_observer_round>
+                        <class>mep/twig_observer_round</class>
+                        <method>addRound</method>
+                    </mep_twig_observer_round>
                 </observers>
             </mep_export_adapter_twig_init>
         </events>
